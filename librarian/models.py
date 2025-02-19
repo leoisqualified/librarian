@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-def Books():
+class Books(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
     isbn = models.CharField(max_length=13, unique=True)
@@ -15,20 +15,23 @@ def Books():
     
 
 #  Member Table
-def Member():
-    name = models.OneToOneField(User, max_length=100)
+class Member(models.Model):
+    name = models.OneToOneField(User, max_length=100, on_delete=models.CASCADE)
     phone = models.CharField(max_length=15)
     membership_date = models.DateField(auto_now_add=True)
     
     def __str__(self):
         return self.name
     
-# Borrow model
-def borrow():
-    borrower_name = models.CharField(max_length=100)
+# Borrowing
+class BorrowingRecord(models.Model):
     book = models.ForeignKey(Books, on_delete=models.CASCADE)
-    borrow_date = models.DateTimeField(auto_now_add=True)
-    return_date = models.DateTimeField()
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    borrow_date = models.DateField(auto_now_add=True)
+    return_date = models.DateField(null=True, blank=True)
+    due_date = models.DateField()
     
     def __str__(self):
-        return self.borrower_name
+        return f"{self.member.user.username} borrowed {self.book.title}"
+
+
