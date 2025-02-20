@@ -30,5 +30,21 @@ def edit_book(request, book_id):
             form.save()
             return redirect('book_list')
     else:
-        form = BookForm(instance=book_id)
+        form = BookForm(instance=book)
     return render(request, 'librarian/edit_book.html', {'form': form, 'book': book})
+
+
+# Delete a Book
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, book_id)
+    if request.method =='POST':
+        form = BookForm(instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm(instance=book_id)
+    return render(request, 'librarian/delete_book.html', {'form':form, 'book': book})
+
+
+        
