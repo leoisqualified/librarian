@@ -20,7 +20,8 @@ class Book(models.Model):
     material_type = models.ForeignKey(MaterialType, on_delete=models.CASCADE)
     total_copies = models.IntegerField()
     available_copies = models.IntegerField()
-
+    image = models.ImageField(upload_to='book_images/', blank=True, null=True)
+    
     def __str__(self):
         return self.title
     
