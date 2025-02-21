@@ -1,6 +1,7 @@
 /* Custom styles for the Library Management System */
 body {
   background-color: #f8f9fa;
+  font-family: "Roboto", sans-serif;
 }
 
 .navbar {

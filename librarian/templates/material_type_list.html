@@ -1,0 +1,25 @@
+{% extends 'library/base.html' %} {% block content %}
+<div class="container">
+  <h1 class="my-4">Material Types</h1>
+  <a href="{% url 'add_material_type' %}" class="btn btn-custom mb-4"
+    >Add New Material Type</a
+  >
+  <div class="list-group">
+    {% for material_type in material_types %}
+    <div class="list-group-item">
+      {{ material_type.name }}
+      <a
+        href="{% url 'edit_material_type' material_type.id %}"
+        class="btn btn-sm btn-primary float-end"
+        >Edit</a
+      >
+      <a
+        href="{% url 'delete_material_type' material_type.id %}"
+        class="btn btn-sm btn-danger float-end me-2"
+        >Delete</a
+      >
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
