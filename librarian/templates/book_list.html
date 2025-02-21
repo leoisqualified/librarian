@@ -1,0 +1,32 @@
+{%load static%} {% extends 'base.html' %} {% block content %}
+<div class="container">
+  <h1 class="my-4">Book Catalog</h1>
+  <a href="{% url 'add_book' %}" class="btn btn-custom mb-4">Add New Book</a>
+  <div class="row">
+    {% for book in books %}
+    <div class="col-md-4 mb-4">
+      <div class="book-card">
+        {% if book.image %}
+        <img
+          src="{{ book.image.url }}"
+          alt="{{ book.title }}"
+          class="img-fluid mb-3"
+        />
+        {% else %}
+        <p class="text-muted">No image available</p>
+        {% endif %}
+        <h5>{{ book.title }}</h5>
+        <p class="text-muted">by {{ book.author }}</p>
+        <p>{{ book.available_copies }} copies available</p>
+        <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-primary"
+          >Edit</a
+        >
+        <a href="{% url 'delete_book' book.id %}" class="btn btn-sm btn-danger"
+          >Delete</a
+        >
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

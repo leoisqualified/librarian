@@ -18,3 +18,4 @@ class MaterialTypeForm(forms.ModelForm):
     class Meta:
         model = MaterialType
         fields = ['name']
+
