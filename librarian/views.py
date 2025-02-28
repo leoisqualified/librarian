@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, MaterialType
+from .models import Book, MaterialType, Member, BorrowingRecord, Hold
 from .forms import BookForm, MaterialTypeForm
+from django.utils import timezone
 
 # Create your views here.
 # Display all the books
@@ -78,3 +79,35 @@ def delete_material_type(request, material_type_id):
     material_type.delete()
     return redirect('material_type_list')
        
+# Checkout Book
+
+def checkout_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if book.available_copies > 0:
+        member = Member.objects.get(user=request.user)
+        BorrowingRecord.objects.create(
+            book=book,
+            member=member,
+            due_date=timezone.now() + timezone.timedelta(days=14)
+        )
+        book.available_copies -= 1
+        book.save()
+    return redirect('book_list')
+
+#Check in book
+def checkin_book(request, record_id):
+    record = get_object_or_404(BorrowingRecord, id=record_id)
+    record.return_date = timezone.now()
+    record.calculate_fine()  # Calculate fine if overdue
+    record.save()
+    book = record.book
+    book.available_copies += 1
+    book.save()
+    return redirect('book_list')
+
+#Place a Hold
+def place_hold(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    member = Member.objects.get(user=request.user)
+    Hold.objects.create(book=book, member=member)
+    return redirect('book_list')

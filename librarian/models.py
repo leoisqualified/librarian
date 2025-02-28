@@ -44,6 +44,14 @@ class BorrowingRecord(models.Model):
     due_date = models.DateField()
     fine = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
+    def calculate_fine(self):
+        if self.return_date and self.return_date > self.due_date:
+            days_overdue = (self.return_date - self.due_date).days
+            self.fine = days_overdue * 1.00
+        else:
+            self.fine = 0.00
+        self.save()
+
     def __str__(self):
         return f"{self.member.user.username} borrowed {self.book.title}"
     

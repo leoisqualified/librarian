@@ -10,4 +10,7 @@ urlpatterns = [
     path('material-types/add/', views.add_material_type, name='add_material_type'),
     path('material-types/edit/<int:material_type_id>/', views.edit_material_type, name='edit_material_type'),
     path('material-types/delete/<int:material_type_id>/', views.delete_material_type, name='delete_material_type'),
+    path('checkout/<int:book_id>/', views.checkout_book, name='checkout_book'),
+    path('checkin/<int:record_id>/', views.checkin_book, name='checkin_book'),
+    path('hold/<int:book_id>/', views.place_hold, name='place_hold')
 ]
